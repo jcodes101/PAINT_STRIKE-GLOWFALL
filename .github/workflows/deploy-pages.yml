@@ -1,13 +1,10 @@
-name: Deploy main and online web builds to GitHub Pages
+name: "Deploy PAINT STRIKE: GLOWFALL to GitHub Pages"
 
-# GitHub Pages provides one site per repository. This workflow publishes two
-# Godot exports inside that one site:
-#   /project-2/         -> main branch
-#   /project-2/online/  -> online branch
+# Publish the current game from this repository's main branch at the Pages root.
 
 on:
   push:
-    branches: [main, online]
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -27,17 +24,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout main branch
+      - name: Checkout game
         uses: actions/checkout@v4
-        with:
-          ref: main
-          path: main-source
-
-      - name: Checkout online branch
-        uses: actions/checkout@v4
-        with:
-          ref: online
-          path: online-source
 
       - name: Download Godot
         run: |
@@ -53,20 +41,15 @@ jobs:
           unzip "Godot_v${GODOT_VERSION}_export_templates.tpz" -d /tmp/templates
           mv /tmp/templates/templates/* "$HOME/.local/share/godot/export_templates/${GODOT_TEMPLATE_VERSION}/"
 
-      - name: Export main branch at site root
+      - name: Export game for the web
         run: |
           mkdir -p "$GITHUB_WORKSPACE/site"
-          ./godot --headless --path "$GITHUB_WORKSPACE/main-source" --export-release "Web" "$GITHUB_WORKSPACE/site/index.html"
-
-      - name: Export online branch under online path
-        run: |
-          mkdir -p "$GITHUB_WORKSPACE/site/online"
-          ./godot --headless --path "$GITHUB_WORKSPACE/online-source" --export-release "Web" "$GITHUB_WORKSPACE/site/online/index.html"
+          ./godot --headless --path "$GITHUB_WORKSPACE" --export-release "Web" "$GITHUB_WORKSPACE/site/index.html"
 
       - name: Prepare Pages artifact
         run: touch "$GITHUB_WORKSPACE/site/.nojekyll"
 
-      - name: Upload both builds
+      - name: Upload game site
         uses: actions/upload-pages-artifact@v4
         with:
           path: site
@@ -78,6 +61,6 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Deploy both builds to GitHub Pages
+      - name: Deploy game to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

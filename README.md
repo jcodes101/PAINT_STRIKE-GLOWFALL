@@ -1,6 +1,6 @@
 # PAINT STRIKE: GLOWFALL
 
-[▶ Play the current browser build](https://gamedevrocky.github.io/project-2/online/)
+[▶ Play PAINT STRIKE: GLOWFALL](https://jcodes101.github.io/PAINT_STRIKE-GLOWFALL/)
 
 PAINT STRIKE: GLOWFALL is a colorful first-person paint shooter set in an open arena. Customize your Canvas Runner, join an online lobby, and compete in Survival free-for-all or Team Deathmatch.
 
